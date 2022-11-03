@@ -1,8 +1,11 @@
-import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useContext, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import img from '../../assets/images/login/login.svg';
+import { AuthContext } from '../../contexts/AuthProvider/AuthProvider';
 
 const Login = () => {
+    const { login } = useContext(AuthContext);
+    const navigate = useNavigate();
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -10,6 +13,19 @@ const Login = () => {
 
     const handleLogin = event => {
         event.preventDefault();
+        const form = event.target;
+        const email = form.email.value;
+        const password = form.password.value;
+
+        login(email, password)
+            .then(result => {
+                const user = result.user;
+                console.log(user);
+                form.reset();
+                navigate('/');
+            })
+            .catch(err => console.error(err));
+
     }
     return (
         <div className="hero w-full my-20">
