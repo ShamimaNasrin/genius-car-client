@@ -16,6 +16,39 @@ const Checkout = () => {
         const phone = form.phone.value;
         const message = form.message.value;
 
+        const order = {
+            service: _id,
+            serviceName: title,
+            price,
+            customer: name,
+            email,
+            phone,
+            message
+        }
+
+        if (phone.length < 5) {
+            alert("phone number must be 5 digit or more");
+        }
+        else {
+            fetch('http://localhost:5000/orders', {
+                method: 'POST',
+                headers: {
+                    'content-type': 'application/json',
+                },
+                body: JSON.stringify(order)
+            })
+                .then(res => res.json())
+                .then(data => {
+                    console.log(data);
+                    if (data.acknowledged) {
+                        alert('Order placed successfully')
+                        form.reset();
+
+                    }
+                })
+                .catch(er => console.error(er));
+        }
+
     }
 
     return (
@@ -26,10 +59,10 @@ const Checkout = () => {
                 <div className='grid grid-cols-1 lg:grid-cols-2 gap-4'>
                     <input name="firstName" type="text" placeholder="First Name" className="input input-ghost w-full  input-bordered" />
                     <input name="lastName" type="text" placeholder="Last Name" className="input input-ghost w-full  input-bordered" />
-                    <input name="phone" type="text" placeholder="Your Phone" className="input input-ghost w-full  input-bordered" />
+                    <input name="phone" type="text" placeholder="Your Phone" className="input input-ghost w-full  input-bordered" required />
                     <input name="email" type="text" placeholder="Your email" defaultValue={user?.email} className="input input-ghost w-full  input-bordered" readOnly />
                 </div>
-                <textarea name="message" className="textarea textarea-bordered h-24 w-full" placeholder="Your Message"></textarea>
+                <textarea name="message" className="textarea textarea-bordered h-24 w-full" placeholder="Your Message" required></textarea>
 
                 <input className='btn' type="submit" value="Place Your Order" />
             </form>
