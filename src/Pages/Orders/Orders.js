@@ -17,7 +17,19 @@ const Orders = () => {
         <div>
             <h2 className="text-5xl">You have {orders.length} Orders</h2>
 
-            
+            <div className="overflow-x-auto w-full">
+                <table className="table w-full">
+
+                    <tbody>
+                        {
+                            orders.map(order => <OrderRow
+                                key={order._id}
+                                order={order}
+                            ></OrderRow>)
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
 };
