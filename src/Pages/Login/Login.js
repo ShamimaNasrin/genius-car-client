@@ -41,10 +41,12 @@ const Login = () => {
                     .then(res => res.json())
                     .then(data => {
                         console.log(data);
+                        localStorage.setItem('genius-token', data.token);
+                        form.reset();
+                        navigate(from, { replace: true });
                     })
 
-                form.reset();
-                // navigate(from, {replace: true});
+
             })
             .catch(err => console.error(err));
 
