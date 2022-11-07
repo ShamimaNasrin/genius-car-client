@@ -1,11 +1,14 @@
 import React, { useContext, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import img from '../../assets/images/login/login.svg';
 import { AuthContext } from '../../contexts/AuthProvider/AuthProvider';
 
 const Login = () => {
     const { login } = useContext(AuthContext);
+    const location = useLocation();
     const navigate = useNavigate();
+
+    const from = location.state?.from?.pathname || '/';
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -22,7 +25,7 @@ const Login = () => {
                 const user = result.user;
                 console.log(user);
                 form.reset();
-                navigate('/');
+                navigate(from, {replace: true});
             })
             .catch(err => console.error(err));
 
